@@ -52,12 +52,28 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 
 ## Project Instructions and Rubric
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+The project is used PID approach to tune steering angle for car according which
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+ steering = -tau_p * CTE - tau_d * diff_CTE - tau_i * int_CTE 
+
+ * CTE input is provided as input
+ * diff_CTE - is the difference between current and previous CTE (derivative)
+ * int_CTE - the sum of all the previous crosstrack errors. (integral modelling)
+ 
+1. Current params are calculated inside *PID::UpdateError* method
+2. Steering sum up is provided inside *PID::TotalError
+
+TotalError is used in main.cpp to setup the steering
+
+## Tuning parameters
+
+The result parameters are initialized by parameters from study lessons
+	* tau_p = 0.2
+	* tau_i = 0.04
+	* tau_d = 3.0
+	
+Each *num_iter_to_tune* iterations parameters tuning is provided (by current implementation for each 50 points). Tuning is provided using backpropagation approach described here:
+https://towardsdatascience.com/tuning-pid-controller-parameters-with-backpropagation-c42c6f80d3cd?gi=796a9624f885
 
 ## Hints!
 
