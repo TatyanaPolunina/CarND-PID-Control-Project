@@ -54,25 +54,31 @@ Please (do your best to) stick to [Google's C++ style guide](https://google.gith
 
 The project is used PID approach to tune steering angle for car according which
 
- steering = -tau_p * CTE - tau_d * diff_CTE - tau_i * int_CTE 
-
- * CTE input is provided as input
- * diff_CTE - is the difference between current and previous CTE (derivative)
- * int_CTE - the sum of all the previous crosstrack errors. (integral modelling)
+ steering = -tau_p * CTE - tau_d * diff_CTE - tau_i * int_CTE
  
+Where:
+ 
+* CTE input is provided as input
+* diff_CTE - is the difference between current and previous CTE (derivative)
+* int_CTE - the sum of all the previous crosstrack errors. (integral modelling)
+
+Current approach is implemented inside PID class:
 1. Current params are calculated inside *PID::UpdateError* method
 2. Steering sum up is provided inside *PID::TotalError
 
-TotalError is used in main.cpp to setup the steering
+TotalError is used in main.cpp to setup the steering angle
 
 ## Tuning parameters
 
-The result parameters are initialized by parameters from study lessons
-	* tau_p = 0.2
-	* tau_i = 0.04
-	* tau_d = 3.0
-	
+The result parameters are initialized by values: 
+
+* tau_p = 0.2
+* tau_i = 0.04
+* tau_d = 3.0
+
+
 Each *num_iter_to_tune* iterations parameters tuning is provided (by current implementation for each 50 points). Tuning is provided using backpropagation approach described here:
+
 https://towardsdatascience.com/tuning-pid-controller-parameters-with-backpropagation-c42c6f80d3cd?gi=796a9624f885
 
 ## Hints!
