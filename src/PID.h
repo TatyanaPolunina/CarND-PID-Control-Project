@@ -1,6 +1,7 @@
 #ifndef PID_H
 #define PID_H
 
+#include <vector>
 class PID {
  public:
   /**
@@ -17,7 +18,7 @@ class PID {
    * Initialize PID.
    * @param (Kp_, Ki_, Kd_) The initial PID coefficients
    */
-  void Init(double Kp_, double Ki_, double Kd_);
+  void Init(double Kp_, double Ki_, double Kd_, int num_iter_to_tune);
 
   /**
    * Update the PID error variables given cross track error.
@@ -32,6 +33,7 @@ class PID {
   double TotalError();
 
  private:
+    void tuneParams(double change_p, double change_i, double change_d, double delta);
   /**
    * PID Errors
    */
@@ -45,6 +47,14 @@ class PID {
   double Kp;
   double Ki;
   double Kd;
+  double tollerance = 0.001;
+  double grad_delta = 0.01;
+  int num_iter_to_tune;
+  int num_iter = 0;
+  double common_error = 0;
+  double prev_error = 0;
+  double total_i = 0;
+  double best_err = 1000;
 };
 
 #endif  // PID_H
